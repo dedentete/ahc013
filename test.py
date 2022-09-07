@@ -1,8 +1,8 @@
 import boto3
 import json
 import time
+import re
 # from analysis import * 
-
 session = boto3.Session()
 
 bucket = session.resource("s3").Bucket("marathonjudgestack-marathonbuckete256be1e-1a2q8kivf5cr6")
@@ -23,8 +23,11 @@ while True:
     else:
         break
 
-scores = json.loads(json.loads(res["output"])["Payload"]["summary_result"]["Payload"])
-print("scores:", scores)
-for score in scores:
-    print(score)
+tests = json.loads(json.loads(res["output"])["Payload"]["summary_result"]["Payload"])
+sum = 0
+for test in tests:
+    sum += int(re.sub(r"\D", "", test['score']))
+    print(test)
+
+print('SUM : ' + str(sum))
 # compare_with_base_score(scores)
