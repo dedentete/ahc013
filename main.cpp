@@ -268,16 +268,14 @@ void output(vector<Move> moves, vector<Connect> connects) {
     }
 }
 
-double dfs(int depth, int x, int y, int pdir, State& state) {
-    if (depth == 3) return 0;
-    int nnx = x + dx[pdir], nny = y + dy[pdir];
+double dfs(int depth, int x, int y, State& state) {
+    if (depth == 1) return 0;
     double res = DBL_MIN / 2;
     for (int nx = max(x - 1, 0); nx <= min(x + 1, N); nx++) {
         for (int ny = max(y - 1, 0); ny <= min(y + 1, N); ny++) {
             rep(dir, 4) {
-                if (nx == nnx && ny == nny && (dir + 2) % 4 == pdir) continue;
                 if (state.move(nx, ny, dir)) {
-                    res = max(res + dfs(depth + 1, nx, ny, dir, state) / 2,
+                    res = max(res + dfs(depth + 1, nx, ny, state) / 2,
                               state.score);
                     state.move(nx + dx[dir], ny + dy[dir], (dir + 2) % 4);
                 }
@@ -299,7 +297,7 @@ void solve() {
     rep(number_of_moves, M * K) {
         if (tmr.getTime() - start_time > TIMELIMIT) break;
         auto p = state.connects(M * K - number_of_moves);
-        output(moves, p.second);
+        // output(moves, p.second);
         if (p.first > highest) {
             highest_moves = moves;
             highest_connects = p.second;
@@ -311,7 +309,7 @@ void solve() {
                 rep(dir, 4) {
                     if (state.move(x, y, dir)) {
                         candidate_moves.emplace_back(pair<double, Move>(
-                            state.score + dfs(0, x, y, dir, state) / 2,
+                            state.score + dfs(0, x, y, state) / 2,
                             Move(x, y, dir)));
                         state.move(x + dx[dir], y + dy[dir], (dir + 2) % 4);
                     }
