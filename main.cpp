@@ -5,7 +5,7 @@ using P = pair<int, int>;
 #define ALL(v) (v).begin(), (v).end()
 
 constexpr int dx[] = {0, 1, 0, -1}, dy[] = {1, 0, -1, 0};
-constexpr double TIMELIMIT = 20.9;
+constexpr double TIMELIMIT = 2.9;
 constexpr int M = 100;
 
 int N, K;
